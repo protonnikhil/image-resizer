@@ -3,69 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProMax Exam Auto-Resizer</title>
+    <title>ProMax Exam Auto-Resizer & PDF Engine</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- PDF Engines -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans antialiased">
     
-    <!-- Navbar -->
     <nav class="bg-white shadow-md py-4 px-6 mb-8 flex justify-between items-center">
         <div class="text-2xl font-extrabold text-blue-600 tracking-tight">
-            <i class="fas fa-crop-alt mr-2"></i>ExamCrop Pro
+            <i class="fas fa-file-signature mr-2"></i>ExamCrop Pro
         </div>
-        <div class="text-sm font-medium text-gray-500">v2.0 Ultra Max</div>
+        <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">v3.0 + PDF Engine</div>
     </nav>
 
     <div class="max-w-4xl mx-auto px-4 pb-20">
-        <!-- Main Glassmorphism Card -->
         <div class="glass-card rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
             
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Smart Image Formatting</h1>
-            <p class="text-gray-500 mb-8">AI-powered resizing, cropping, and KB compression for Gov Exams.</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Universal Gov Document Formatter</h1>
+            <p class="text-gray-500 mb-8">Auto-compress Photos, Signatures, Marksheets, and Degrees to exact KB rules.</p>
 
-            <!-- Upload Area -->
             <div id="drop-zone" class="border-3 border-dashed border-blue-300 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:border-blue-500 mb-8 group">
                 <i class="fas fa-cloud-upload-alt text-5xl text-blue-400 mb-4 group-hover:-translate-y-2 transition-transform duration-300"></i>
                 <p class="text-lg text-gray-700 font-semibold">Drag & Drop or Tap to Upload</p>
-                <p class="text-sm text-gray-400 mt-2">Supports JPG, JPEG, PNG</p>
-                <input type="file" id="file-input" class="hidden" accept="image/jpeg, image/png">
+                <p class="text-sm text-gray-400 mt-2">Supports JPG, PNG, and PDF</p>
+                <input type="file" id="file-input" class="hidden" accept="image/jpeg, image/png, application/pdf">
             </div>
 
-            <div id="file-name" class="text-center text-md font-bold text-green-600 mb-8 hidden bg-green-50 py-2 rounded-lg"></div>
+            <div id="file-name" class="text-center text-md font-bold text-green-600 mb-8 hidden bg-green-50 py-3 rounded-lg shadow-inner"></div>
 
-            <!-- Configuration Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                 <div class="input-group">
-                    <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fas fa-university mr-2"></i>Select Exam Target</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fas fa-university mr-2"></i>Select Authority / Exam</label>
                     <select id="exam-select" class="w-full border-2 border-gray-200 rounded-lg p-3 text-gray-700 focus:ring-0 focus:border-blue-500 transition-colors bg-white">
                         <option value="upsc">UPSC (Civil Services/NDA/CDS)</option>
-                        <option value="ssc">SSC (CGL/CHSL/MTS)</option>
-                        <option value="neet">NEET / NTA</option>
-                        <option value="jee">JEE Main / Advanced</option>
-                        <option value="cuet">CUET (UG/PG)</option>
-                        <option value="state_police">State Police / UP Police</option>
+                        <option value="ssc">SSC (CGL/CHSL/MTS/GD)</option>
+                        <option value="ibps">IBPS / SBI (Banking)</option>
+                        <option value="rrb">RRB (Railways NTPC/Group D)</option>
+                        <option value="nta">NTA (NEET/JEE/CUET/UGC NET)</option>
+                        <option value="defence">Defence (AFCAT/Navy/Army)</option>
+                        <option value="state_psc">State PSC (UPPSC/BPSC/MPPSC)</option>
+                        <option value="state_police">State Police Recruitment</option>
+                        <option value="gate">GATE / Engineering Services</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fas fa-file-image mr-2"></i>Document Type</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fas fa-file-alt mr-2"></i>Document Type</label>
                     <select id="doc-select" class="w-full border-2 border-gray-200 rounded-lg p-3 text-gray-700 focus:ring-0 focus:border-blue-500 transition-colors bg-white">
-                        <option value="photo">Passport Photograph</option>
-                        <option value="signature">Signature</option>
-                        <option value="thumb">Left Thumb Impression</option>
+                        <option value="photo">Passport Photograph (JPG)</option>
+                        <option value="signature">Signature (JPG)</option>
+                        <option value="thumb">Thumb Impression (JPG)</option>
+                        <option value="marksheet">Marksheet (PDF/JPG)</option>
+                        <option value="degree">Degree Certificate (PDF/JPG)</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Action Button -->
             <button id="process-btn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 active:translate-y-0 text-lg flex justify-center items-center">
-                <i class="fas fa-cogs mr-2"></i> Auto-Format to Exact Specs
+                <i class="fas fa-magic mr-2"></i> Auto-Format Document
             </button>
         </div>
 
-        <!-- Output Result Area -->
         <div id="result-area" class="mt-10 glass-card rounded-2xl shadow-xl p-8 text-center hidden transform transition-all duration-500 scale-95 opacity-0">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 text-green-500 rounded-full mb-4">
                 <i class="fas fa-check text-3xl"></i>
@@ -73,12 +76,17 @@
             <h2 class="text-2xl font-extrabold text-gray-800 mb-2">Processing Complete!</h2>
             
             <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200 text-left">
-                <p class="text-sm font-semibold text-gray-700 mb-1 border-b pb-2"><i class="fas fa-info-circle text-blue-500 mr-2"></i>Generated Specifications:</p>
+                <p class="text-sm font-semibold text-gray-700 mb-1 border-b pb-2"><i class="fas fa-info-circle text-blue-500 mr-2"></i>Official Requirements Met:</p>
                 <p id="spec-info" class="text-md text-gray-800 mt-2 font-mono bg-white p-2 rounded border"></p>
             </div>
             
-            <div id="preview-container" class="flex justify-center bg-gray-200 rounded-xl p-6 mb-6 checkerboard-bg shadow-inner">
-                <img id="final-image" src="" alt="Processed Image" class="rounded-lg shadow-lg border-4 border-white max-h-64 object-contain">
+            <!-- Dynamic Preview (Shows Image or PDF icon) -->
+            <div id="preview-container" class="flex justify-center items-center bg-gray-200 rounded-xl p-6 mb-6 checkerboard-bg shadow-inner min-h-[200px]">
+                <img id="final-image" src="" class="rounded-lg shadow-lg border-4 border-white max-h-64 object-contain hidden">
+                <div id="pdf-success" class="hidden flex-col items-center">
+                    <i class="fas fa-file-pdf text-6xl text-red-500 mb-3"></i>
+                    <p class="text-gray-700 font-bold">Secure PDF Generated</p>
+                </div>
             </div>
             
             <a id="download-link" href="#" class="w-full sm:w-auto inline-flex justify-center items-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-10 rounded-xl shadow-md transition-colors text-lg">
@@ -90,4 +98,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
